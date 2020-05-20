@@ -1,7 +1,7 @@
 # Keep this migration in sync with
 # `lib/generators/paper_trail/templates/create_versions.rb`
 # TODO: Is there a way to avoid duplication?
-class SetUpTestTables < ActiveRecord::Migration
+class SetUpTestTables < ActiveRecord::Migration["5.2"]
   MYSQL_ADAPTERS = [
     "ActiveRecord::ConnectionAdapters::MysqlAdapter",
     "ActiveRecord::ConnectionAdapters::Mysql2Adapter"
