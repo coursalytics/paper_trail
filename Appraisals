@@ -28,7 +28,7 @@ appraise "ar4" do
 end
 
 appraise "ar5" do
-  gem "activerecord", "~> 5.0.0"
+  gem "activerecord", "5.2.4.2"
   gem "rspec-rails", "~> 3.5.1"
   gem 'rails-controller-testing'
 

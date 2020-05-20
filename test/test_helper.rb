@@ -28,8 +28,9 @@ end
 
 Rails.backtrace_cleaner.remove_silencers!
 
+require "./test/dummy/db/migrate/20110208155312_set_up_test_tables.rb"
 # Run any available migration
-ActiveRecord::Migrator.migrate File.expand_path("../dummy/db/migrate/", __FILE__)
+ActiveRecord::Migrator.new("up", [SetUpTestTables]).migrate
 
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
