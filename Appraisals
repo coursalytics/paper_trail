@@ -17,7 +17,7 @@ appraise "ar3" do
     gem 'railties', '~> 3.2.22'
     gem 'test-unit', '~> 3.1.5'
     platforms :ruby do
-      gem 'mysql2', '~> 0.3.20'
+      # gem 'mysql2', '~> 0.3.20'
     end
   end
 end
