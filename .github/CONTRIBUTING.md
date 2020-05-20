@@ -75,19 +75,29 @@ Run tests with postgres:
 rm test/dummy/config/database.yml
 DB=postgres bundle exec rake prepare
 
+Before running:
+
+cd test/dummy
+env RAILS_ENV=test rake db:create
+env RAILS_ENV=bar rake db:create
+env RAILS_ENV=foo rake db:create
+env RAILS_ENV=test rake db:migrate
+env RAILS_ENV=bar rake db:migrate
+env RAILS_ENV=foo rake db:migrate
+
 # If this is the first test run ever, create databases.
 # Unlike mysql, use create/migrate instead of setup.
 cd test/dummy
-DB=postgres RAILS_ENV=test bundle exec rake db:create
-DB=postgres RAILS_ENV=test bundle exec rake db:migrate
-DB=postgres RAILS_ENV=foo bundle exec rake db:create
-DB=postgres RAILS_ENV=foo bundle exec rake db:migrate
-DB=postgres RAILS_ENV=bar bundle exec rake db:create
-DB=postgres RAILS_ENV=bar bundle exec rake db:migrate
+env DB=postgres RAILS_ENV=test bundle exec rake db:create
+env DB=postgres RAILS_ENV=test bundle exec rake db:migrate
+env DB=postgres RAILS_ENV=foo bundle exec rake db:create
+env DB=postgres RAILS_ENV=foo bundle exec rake db:migrate
+env DB=postgres RAILS_ENV=bar bundle exec rake db:create
+env DB=postgres RAILS_ENV=bar bundle exec rake db:migrate
 cd ../..
 
 # Run tests
-DB=postgres bundle exec rake
+env DB=postgres bundle exec appraisal ar5 rake
 ```
 
 ### Releases
