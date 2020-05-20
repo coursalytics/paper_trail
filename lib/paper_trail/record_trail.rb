@@ -17,7 +17,8 @@ module PaperTrail
     end
 
     def attributes_before_change
-      changed = @record.changed_attributes.select { |k, _v|
+      # Hash of key: 'string'
+      changed = @record.saved_changes.transform_values(&:first).select { |k, _v|
         @record.class.column_names.include?(k)
       }
       @record.attributes.merge(changed)
@@ -34,7 +35,8 @@ module PaperTrail
           }
       end
       skip = @record.paper_trail_options[:skip]
-      @record.changed - ignore - skip
+      # Array
+      @record.saved_changes.keys - ignore - skip
     end
 
     # Invoked after rollbacks to ensure versions records are not created for
@@ -65,7 +67,8 @@ module PaperTrail
 
     # @api private
     def changes
-      notable_changes = @record.changes.delete_if { |k, _v|
+      # Hash of key: ['string', 'string']
+      notable_changes = @record.saved_changes.delete_if { |k, _v|
         !notably_changed.include?(k)
       }
       AttributeSerializers::ObjectChangesAttribute.
@@ -87,7 +90,7 @@ module PaperTrail
     # changed.
     def ignored_attr_has_changed?
       ignored = @record.paper_trail_options[:ignore] + @record.paper_trail_options[:skip]
-      ignored.any? && (@record.changed & ignored).any?
+      ignored.any? && (@record.saved_changes.keys & ignored).any?
     end
 
     # Returns true if this instance is the current, live one;
@@ -107,9 +110,9 @@ module PaperTrail
             # If it is an attribute that is changing in an existing object,
             # be sure to grab the current version.
             if @record.has_attribute?(v) &&
-                @record.send("#{v}_changed?".to_sym) &&
+                @record.saved_change_to_attribute?(v) &&
                 data[:event] != "create"
-              @record.send("#{v}_was".to_sym)
+              @record.attribute_in_database(v)
             else
               @record.send(v)
             end
